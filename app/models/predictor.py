@@ -17,7 +17,10 @@ class PredictionRequest(BaseModel):
 
 class ResultItem(BaseModel):
     id :  str 
-    label_class :  ResultClasses
+    label_class :  ResultClasses = Field(alias = "labelClass")
+
+    model_config = SettingsConfigDict(populate_by_name=True)
+
 
 class PredictionResult(BaseModel):
     uid : str  = Field(default_factory=get_uuid4)
