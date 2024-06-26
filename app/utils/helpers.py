@@ -7,19 +7,22 @@ from app.config.settings import get_settings
 import requests
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from tensorflow import get_logger
 from fastapi import UploadFile
 import numpy as np
-import shutil
+import shutil, logging
 
 
 settings = get_settings()
+
+# Suppress TensorFlow logging
+get_logger().setLevel(logging.CRITICAL)
 
 model_path  =  "./app/maizespy.keras"
 
 model = load_model(model_path)
 
 target_size = (256, 256)
-
 
 
 def make_url(frag, surfix="", base_url=""):
