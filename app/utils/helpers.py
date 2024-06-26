@@ -5,10 +5,25 @@ from datetime import datetime, timezone
 from fastapi import status as status_codes
 from app.config.settings import get_settings
 import requests
+from contextlib import redirect_stdout
+from tensorflow.keras.models import load_model
 
 
 settings = get_settings()
 
+
+def suppress_output(func):
+    def wrapper(*args, **kwargs):
+        with open(os.devnull, 'w') as fnull:
+            with redirect_stdout(fnull):
+                result = func(*args, **kwargs)
+        return result
+    return wrapper
+
+
+@suppress_output
+def load_model_silently(model_path):
+    return load_model(model_path)
 
 def make_url(frag, surfix="", base_url=""):
 

@@ -2,6 +2,12 @@ from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
 from app.utils.helpers import get_uuid4, get_utc_timestamp
 from .enums import ResultClasses
+from fastapi import UploadFile
+
+
+class ImageData(BaseModel):
+    id: str
+    image: UploadFile
 
 
 

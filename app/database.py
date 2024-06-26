@@ -11,7 +11,8 @@ sync_db = client[settings.db_name]
 
 
 class Collections(str, Enum):
-    users = "Users"
+    prediction_requests = "PredictionRequests"
+    prediction_results = "PredictionResults"
 
 
 client = motor_asyncio.AsyncIOMotorClient(settings.db_url)
