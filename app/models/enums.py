@@ -2,7 +2,7 @@ from enum import StrEnum, unique
 
 
 @unique
-class ResultClasses(StrEnum):
+class LabelClasses(StrEnum):
     BLIGHT = "BLIGHT"
     SPOT = "SPOT"
     RUST = "RUST"
