@@ -1,10 +1,6 @@
-from pymongo import MongoClient
-from pydantic import EmailStr
 from huey.exceptions import CancelExecution
-from huey import crontab
 from app.config.settings import get_settings
 from .main import huey
-from app.utils.helpers import get_utc_timestamp
 from app.database import sync_db as db, Collections
 from app.utils.helpers import predict_images
 from app.models.predictor import PredictionResult, ResultItem
@@ -30,16 +26,7 @@ def task_predict_images( data :  list[dict] ):
 
     db[Collections.prediction_results].insert_many(entries)
 
-    print(predictions)
+    print( "Predictions: ", entries)
 
 
 
-# Task to test the huey consumer
-@huey.task(retries=3,  retry_delay=10, name="task_system_check")
-def task_test_huey():
-
-    if not settings.debug:
-        raise CancelExecution(retry=False)
-
-    db["task_queue"].insert_one({"ts": get_utc_timestamp()})
-    return
