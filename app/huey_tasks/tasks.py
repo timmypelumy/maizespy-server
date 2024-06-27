@@ -11,10 +11,8 @@ settings = get_settings()
 
 @huey.task(retries=1 , retry_delay=20, name = "task_predict_images")
 def task_predict_images( data :  list[dict] ):
-
-    image_files = [ d["file"] for d in data ]
     
-    predictions = predict_images(image_files)
+    predictions = predict_images(data)
 
     entries = []
 

@@ -5,11 +5,11 @@ from datetime import datetime, timezone
 from fastapi import status as status_codes
 from app.config.settings import get_settings
 import requests
-from tensorflow.keras.preprocessing import image
-from tensorflow import get_logger
-from fastapi import UploadFile
 import numpy as np
-import shutil
+import base64
+from io import BytesIO
+from PIL import Image
+from lifespan import model
 
 
 
@@ -39,32 +39,28 @@ def predict_single_image(img_array):
 
 
 
-def predict_images( files :  list[UploadFile]):
+def predict_images( images : list[dict]):
 
     predictions = []
 
-    for file in files:
-        # Save to temp location
+    for item in images:
 
-        file_location = f"./temp/{file.filename}"
-        with open(file_location, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        image_str  =  item["image_str"]
 
-        # Load and preprocess 
-        img = image.load_img(file_location, target_size=target_size)
-        img_array = image.img_to_array(img)
+        image_data = base64.b64decode(image_str)
+        image = Image.open(BytesIO(image_data))
+        
+        img_array = image.img_to_array(image.resize(target_size))
 
         # Make prediction 
         predicted_class_index = predict_single_image(img_array)
 
         # Append prediction result
         predictions.append({
-            "filename": file.filename,
-            "predicted_class_index": predicted_class_index
+            "predicted_class_index": predicted_class_index,
+            "image_id" : item["image_id"],
+            "prediction_request_id" : item["prediction_request_id"]
         })
-
-        # Remove the temporary file
-        os.remove(file_location)
 
     return predictions
 

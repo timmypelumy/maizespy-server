@@ -2,12 +2,15 @@ from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
 from app.utils.helpers import get_uuid4, get_utc_timestamp
 from .enums import LabelClasses
-from fastapi import UploadFile
+from fastapi import UploadFile, File
 
 
 class ImageData(BaseModel):
     id: str
-    image: UploadFile
+    image_string: str = Field(alias="imageString")
+
+    model_config = SettingsConfigDict(populate_by_name=True)
+
 
 
 

@@ -2,6 +2,9 @@ from fastapi import APIRouter
 from app.models.predictor import *
 from app.database import db, Collections
 from app.huey_tasks.tasks import task_predict_images
+import base64
+from io import BytesIO
+from PIL import Image
 
 
 router = APIRouter()
@@ -34,7 +37,7 @@ async def predict_maize_disease(images: list[ImageData]):
 
         task_data.append({
             "prediction_request_id" : r.uid,
-            "file" : image_data.image,
+            "image_str" : image_data.image_string,
             "image_id" : image_data.id
         })
 
