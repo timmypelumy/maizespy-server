@@ -7,14 +7,14 @@ from app.huey_tasks.tasks import task_predict_images
 
 router = APIRouter()
 
-@router.get("/results", response_model = list[PredictionResult])
+@router.post("/results", response_model = list[PredictionResult])
 async def get_prediction_results( prediction_requests_ids :  list[str] ):
 
     query = {"prediction_request_id": {"$in": prediction_requests_ids }}
 
     cursor = db[Collections.prediction_results].find(query)
 
-    items = await cursor.to_list(length = None)
+    items = [PredictionResult(**x) for x in await cursor.to_list(length = None)]
 
     return items
 

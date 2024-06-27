@@ -58,7 +58,9 @@ def predict_images(model, images : list[dict]):
 
         label = None
 
-        print("Predicted class index: ", predicted_class_index)
+        if settings.debug:
+
+            print("Predicted class index: ", predicted_class_index)
 
         if predicted_class_index == 0:
             label = LabelClasses.BLIGHT

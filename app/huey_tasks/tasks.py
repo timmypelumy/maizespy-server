@@ -36,7 +36,9 @@ def task_predict_images( data :  list[dict] ):
 
     db[Collections.prediction_results].insert_many(entries)
 
-    print( "Predictions: ", predictions)
+    if settings.debug:
+
+        print( "Predictions: ", predictions)
 
 
 
