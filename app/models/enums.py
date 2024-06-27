@@ -1,8 +1,8 @@
-from enum import StrEnum, unique
+from enum import Enum, unique
 
 
 @unique
-class LabelClasses(StrEnum):
+class LabelClasses( str,Enum):
     BLIGHT = "BLIGHT"
     SPOT = "SPOT"
     RUST = "RUST"
