@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     client_url:  str = "http://localhost:3000"
     support_email: str = "MaizeSpy@myMaizeSpy.xyz"
 
+    ml_model_path :  str = "./spy.h5"
+
     model_config = SettingsConfigDict(env_file=".env")
 
 

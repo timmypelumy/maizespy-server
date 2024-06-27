@@ -10,7 +10,6 @@ import numpy as np
 import base64
 from io import BytesIO
 from PIL import Image
-from lifespan import model
 
 
 
@@ -30,7 +29,7 @@ def make_url(frag, surfix="", base_url=""):
 
 
 # Function to preprocess and predict on a single image array
-def predict_single_image(img_array):
+def predict_single_image(model,img_array):
     img_array = img_array / 255.0
     img_array = np.expand_dims(img_array, axis=0)  
     predictions = model.predict(img_array)
@@ -40,10 +39,7 @@ def predict_single_image(img_array):
 
 
 
-def predict_images( images : list[dict]):
-
-    if model is None:
-        raise ValueError("Model is not loaded")
+def predict_images(model, images : list[dict]):
 
     predictions = []
 
@@ -57,7 +53,7 @@ def predict_images( images : list[dict]):
         img_array = image.img_to_array(img.resize(target_size))
 
         # Make prediction 
-        predicted_class_index = predict_single_image(img_array)
+        predicted_class_index = predict_single_image(model,img_array)
 
         # Append prediction result
         predictions.append({
