@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     db_url: str = "mongodb://localhost:4000"
     debug:  bool = True
     model_config = SettingsConfigDict(env_file=".env")
-    allowed_origins: list[str] = ["http://localhost:5173",]
+    allowed_origins: list[str] = ["http://localhost:5173","http://localhost:3000","http://localhost:7000", "https://maizespy.render.com","https://maizespy.com","https://maizespy.xyz","https://www.maizespy.com","https://www.maizespy.xyz","https://www.maizespy.render.com"]
     server_url: str = "http://localhost:7000"
     client_url:  str = "http://localhost:3000"
     support_email: str = "MaizeSpy@myMaizeSpy.xyz"
