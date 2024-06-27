@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from datetime import datetime, timezone
 from fastapi import status as status_codes
 from app.config.settings import get_settings
+from tensorflow.keras.preprocessing import image
 import requests
 import numpy as np
 import base64
@@ -41,6 +42,9 @@ def predict_single_image(img_array):
 
 def predict_images( images : list[dict]):
 
+    if model is None:
+        raise ValueError("Model is not loaded")
+
     predictions = []
 
     for item in images:
@@ -48,9 +52,9 @@ def predict_images( images : list[dict]):
         image_str  =  item["image_str"]
 
         image_data = base64.b64decode(image_str)
-        image = Image.open(BytesIO(image_data))
+        img = Image.open(BytesIO(image_data))
         
-        img_array = image.img_to_array(image.resize(target_size))
+        img_array = image.img_to_array(img.resize(target_size))
 
         # Make prediction 
         predicted_class_index = predict_single_image(img_array)

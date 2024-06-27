@@ -2,9 +2,7 @@ from fastapi import APIRouter
 from app.models.predictor import *
 from app.database import db, Collections
 from app.huey_tasks.tasks import task_predict_images
-import base64
-from io import BytesIO
-from PIL import Image
+
 
 
 router = APIRouter()

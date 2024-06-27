@@ -1,4 +1,3 @@
-from huey.exceptions import CancelExecution
 from app.config.settings import get_settings
 from .main import huey
 from app.database import sync_db as db, Collections
