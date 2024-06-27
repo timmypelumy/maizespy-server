@@ -33,7 +33,7 @@ class ResultItem(BaseModel):
 class PredictionResult(BaseModel):
     uid : str  = Field(default_factory=get_uuid4)
     created_at : float = Field(default_factory= get_utc_timestamp, alias  = "createdAt")
-    prediction_request_id :  str = Field(alias="PredictionrequestId")
+    prediction_request_id :  str = Field(alias="PredictionRequestId")
     result : ResultItem 
 
     model_config = SettingsConfigDict(populate_by_name=True)

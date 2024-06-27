@@ -20,17 +20,6 @@ except Exception as e:
 
 
 
-
-# @huey.on_startup()
-# def load_model_on_startup():
-#     global model
-
-#     try:
-#         print("Model loaded successfully")
-#     except Exception as e:
-#         print("Error loading model: ", e)
-
-
 @huey.task(retries=1 , retry_delay=20, name = "task_predict_images")
 def task_predict_images( data :  list[dict] ):
 
@@ -39,15 +28,15 @@ def task_predict_images( data :  list[dict] ):
 
     entries = []
 
-    for x in data:
+    for x in predictions:
 
-        r = PredictionResult(request_id = x["prediction_request_id"], result = ResultItem(id = x["image_id"], label_class = LabelClasses.BLIGHT) )
+        r = PredictionResult(prediction_request_id = x["prediction_request_id"], result = ResultItem(image_id = x["image_id"], label_class = x["label"]) )
         
         entries.append(r.model_dump())
 
     db[Collections.prediction_results].insert_many(entries)
 
-    print( "Predictions: ", entries)
+    print( "Predictions: ", predictions)
 
 
 

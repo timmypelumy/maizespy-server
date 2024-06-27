@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from fastapi import status as status_codes
 from app.config.settings import get_settings
 from tensorflow.keras.preprocessing import image
+from app.models.enums import LabelClasses
 import requests
 import numpy as np
 import base64
@@ -55,9 +56,27 @@ def predict_images(model, images : list[dict]):
         # Make prediction 
         predicted_class_index = predict_single_image(model,img_array)
 
+        label = None
+
+        print("Predicted class index: ", predicted_class_index)
+
+        if predicted_class_index == 0:
+            label = LabelClasses.BLIGHT
+
+        elif predicted_class_index == 1:
+            label = LabelClasses.RUST
+
+        elif predicted_class_index == 2:
+            label = LabelClasses.SPOT
+
+        elif predicted_class_index == 3:
+
+            label = LabelClasses.HEALTHY
+
+
         # Append prediction result
         predictions.append({
-            "predicted_class_index": predicted_class_index,
+            "label": label,
             "image_id" : item["image_id"],
             "prediction_request_id" : item["prediction_request_id"]
         })
