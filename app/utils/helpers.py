@@ -13,7 +13,6 @@ from io import BytesIO
 from PIL import Image
 
 
-
 settings = get_settings()
 
 target_size = (256, 256)
@@ -27,63 +26,67 @@ def make_url(frag, surfix="", base_url=""):
     return "{0}{1}{2}".format(base_url, frag, surfix)
 
 
-
-
 # Function to preprocess and predict on a single image array
-def predict_single_image(model,img_array):
+def predict_single_image(model, img_array):
     img_array = img_array / 255.0
-    img_array = np.expand_dims(img_array, axis=0)  
+    img_array = np.expand_dims(img_array, axis=0)
     predictions = model.predict(img_array)
     predicted_class_index = np.argmax(predictions, axis=1)[0]
     return predicted_class_index
 
 
-
-
-def predict_images(model, images : list[dict]):
+def predict_images(model, images: list[dict]):
 
     predictions = []
 
-    for item in images:
+    try:
 
-        image_str  =  item["image_str"]
+        for item in images:
 
-        image_data = base64.b64decode(image_str)
-        img = Image.open(BytesIO(image_data))
-        
-        img_array = image.img_to_array(img.resize(target_size))
+            image_str = item["image_str"]
 
-        # Make prediction 
-        predicted_class_index = predict_single_image(model,img_array)
+            image_data = base64.b64decode(image_str)
+            img = Image.open(BytesIO(image_data))
 
-        label = None
+            img_array = image.img_to_array(img.resize(target_size))
+
+            # Make prediction
+            predicted_class_index = predict_single_image(model, img_array)
+
+            label = None
+
+            if settings.debug:
+
+                print("Predicted class index: ", predicted_class_index)
+
+            if predicted_class_index == 0:
+                label = LabelClasses.BLIGHT
+
+            elif predicted_class_index == 1:
+                label = LabelClasses.RUST
+
+            elif predicted_class_index == 2:
+                label = LabelClasses.SPOT
+
+            elif predicted_class_index == 3:
+
+                label = LabelClasses.HEALTHY
+
+            # Append prediction result
+            predictions.append({
+                "label": label,
+                "image_id": item["image_id"],
+                "prediction_request_id": item["prediction_request_id"]
+            })
+
+        return predictions
+
+    except Exception as e:
 
         if settings.debug:
+            print("Error predicting images: ", e)
 
-            print("Predicted class index: ", predicted_class_index)
-
-        if predicted_class_index == 0:
-            label = LabelClasses.BLIGHT
-
-        elif predicted_class_index == 1:
-            label = LabelClasses.RUST
-
-        elif predicted_class_index == 2:
-            label = LabelClasses.SPOT
-
-        elif predicted_class_index == 3:
-
-            label = LabelClasses.HEALTHY
-
-
-        # Append prediction result
-        predictions.append({
-            "label": label,
-            "image_id" : item["image_id"],
-            "prediction_request_id" : item["prediction_request_id"]
-        })
-
-    return predictions
+        return predictions
 
 
 def make_request(url, method, headers={}, body=None):
