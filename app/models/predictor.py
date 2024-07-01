@@ -4,7 +4,6 @@ from app.utils.helpers import get_uuid4, get_utc_timestamp
 from .enums import LabelClasses
 
 
-
 class ImageData(BaseModel):
     id: str
     image_string: str = Field(alias="imageString")
@@ -12,29 +11,28 @@ class ImageData(BaseModel):
     model_config = SettingsConfigDict(populate_by_name=True)
 
 
-
-
 class PredictionRequest(BaseModel):
-    uid : str  = Field(default_factory=get_uuid4)
-    image_id :  str = Field(min_length=1, alias="imageId")
-    created_at : float = Field(default_factory= get_utc_timestamp, alias  = "createdAt")
-    result_id :  str | None = Field(default= None,alias="resultId")
+    uid: str = Field(default_factory=get_uuid4)
+    image_id:  str = Field(min_length=1, alias="imageId")
+    created_at: float = Field(
+        default_factory=get_utc_timestamp, alias="createdAt")
+    result_id:  str | None = Field(default=None, alias="resultId")
 
     model_config = SettingsConfigDict(populate_by_name=True)
 
 
 class ResultItem(BaseModel):
-    image_id :  str   = Field(alias = "imageId")
-    label_class :  LabelClasses = Field(alias = "labelClass")
+    image_id:  str = Field(alias="imageId")
+    label_class:  LabelClasses = Field(alias="labelClass")
 
     model_config = SettingsConfigDict(populate_by_name=True)
 
 
 class PredictionResult(BaseModel):
-    uid : str  = Field(default_factory=get_uuid4)
-    created_at : float = Field(default_factory= get_utc_timestamp, alias  = "createdAt")
-    prediction_request_id :  str = Field(alias="PredictionRequestId")
-    result : ResultItem 
+    uid: str = Field(default_factory=get_uuid4)
+    created_at: float = Field(
+        default_factory=get_utc_timestamp, alias="createdAt")
+    prediction_request_id:  str = Field(alias="predictionRequestId")
+    result: ResultItem
 
     model_config = SettingsConfigDict(populate_by_name=True)
-

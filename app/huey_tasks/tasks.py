@@ -33,7 +33,8 @@ def task_predict_images(data:  list[dict]):
 
         entries.append(r.model_dump())
 
-    db[Collections.prediction_results].insert_many(entries)
+    if len(entries) > 0:
+        db[Collections.prediction_results].insert_many(entries)
 
     if settings.debug:
 
