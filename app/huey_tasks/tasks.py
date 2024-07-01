@@ -28,7 +28,10 @@ def task_predict_images(data:  list[dict]):
 
     for x in predictions:
 
+        index = predictions.index(x)
+
         r = PredictionResult(prediction_request_id=x["prediction_request_id"], result=ResultItem(
+            image_string=data[index]["image_str"],
             image_id=x["image_id"], label_class=x["label"]))
 
         entries.append(r.model_dump())

@@ -24,6 +24,7 @@ class PredictionRequest(BaseModel):
 class ResultItem(BaseModel):
     image_id:  str = Field(alias="imageId")
     label_class:  LabelClasses = Field(alias="labelClass")
+    image_string: str | None = Field(None, alias="imageString")
 
     model_config = SettingsConfigDict(populate_by_name=True)
 
