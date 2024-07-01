@@ -48,6 +48,10 @@ def predict_images(model, images: list[dict]):
             image_data = base64.b64decode(image_str)
             img = Image.open(BytesIO(image_data))
 
+            # Convert the image to RGB if it has an alpha channel
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
+
             img_array = image.img_to_array(img.resize(target_size))
 
             # Make prediction
