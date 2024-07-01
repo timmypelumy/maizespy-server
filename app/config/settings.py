@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     debug:  bool = True
     model_config = SettingsConfigDict(env_file=".env")
     allowed_origins: list[str] = ["http://localhost:5173", "http://localhost:3000", "http://localhost:7000", "https://maizespy.onrender.com",
-                                  "https://maizespy.com", "https://maizespy.xyz", "https://www.maizespy.com", "https://www.maizespy.xyz", "https://maizespy.vercel.app"]
+                                  "https://maizespy.xyz", "https://api.maizespy.xyz", "https://www.maizespy.xyz", "https://maizespy.vercel.app"]
     server_url: str = "http://localhost:7000"
     client_url:  str = "http://localhost:3000"
     support_email: str = "MaizeSpy@myMaizeSpy.xyz"
